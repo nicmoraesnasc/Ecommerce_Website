@@ -1,0 +1,20 @@
+<div class="header-div">
+    <form method="get" action="{{ url_for('index') }}">
+        <button name="index-btn">Home</button>
+    </form>
+    <form method="get" action="{{ url_for('logout') }}">
+        <button name="logout-btn">Log out</button>
+    </form>
+    <form method="get" action="{{ url_for('products') }}">
+        <button name="products-btn">Catálogo</button>
+    </form>
+    <form method="get" action="{{ url_for('user') }}">
+        <button name="products-btn">Perfil</button>
+    </form>
+    {% if is_admin %}
+        <form method="get" action="{{ url_for('manage_users') }}">
+            <button name="products-btn">Editar usuários</button>
+        </form>
+    {% endif %}
+</div>
+<br><hr><br>

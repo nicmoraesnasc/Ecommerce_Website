@@ -1,0 +1,23 @@
+<!-- <div>
+    <div class="img">
+        <img src="">
+    </div>
+    <div class="description">
+        <tr>
+            <label>{{ product_name }}</label></br>
+            <label>{{ product_price }}</label></br>
+            <label>{{ product_desc }}</label></br>
+            <button>Comprar</button>
+        </tr>
+    </div>
+</div> -->
+
+<div class="card">
+    <img class="card-img-top" src="{{ url_for('static', filename='image/empty-image.jpg')}}" alt="Imagem de capa do card" style="width: 150px;">
+    <div class="card-body">
+        <label><h5 class="card-title">{{ product_name }}</h5></label>
+        <label><p class="card-price">{{ product_price }}</p></label>
+        <label><p class="card-text">{{ product_desc }}</p></label>
+        <a href="#" class="btn btn-primary">Comprar</a>
+    </div>
+</div>
