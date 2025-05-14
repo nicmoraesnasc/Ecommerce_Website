@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+    <title>Carrinho de Compras</title>
+</head>
+<body>
+    {% include 'header/index.html' %}
+    
+    <div class="cart-container">
+        <h2>Seu Carrinho</h2>
+        
+        {% if cart_items %}
+            <!-- TABELA DO CARRINHO (ADICIONE AQUI) -->
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Preço Unitário</th>
+                        <th>Quantidade</th>
+                        <th>Total</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product_name }}</td>
+                        <td>R$ {{ "%.2f"|format(item.price) }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('update_cart_item', item_id=item.id) }}">
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="quantity-input">
+                                <button type="submit" class="btn-update">Atualizar</button>
+                            </form>
+                        </td>
+                        <td>R$ {{ "%.2f"|format(item.price * item.quantity) }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('remove_cart_item', item_id=item.id) }}">
+                                <button type="submit" class="btn-remove">Remover</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"><strong>Total do Carrinho:</strong></td>
+                        <td colspan="2"><strong>R$ {{ "%.2f"|format(total_price) }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+            
+            <div class="cart-actions">
+                <form method="GET" action="{{ url_for('checkout') }}">
+                    <button type="submit" class="btn-checkout">Comprar</button>
+                </form>
+                
+                <form method="POST" action="{{ url_for('clear_cart') }}">
+                    <button type="submit" class="btn-clear">Esvaziar carrinho</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="empty-cart">
+                <p>Seu carrinho está vazio.</p>
+                <a href="{{ url_for('products') }}" class="btn-continue">Continuar comprando</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

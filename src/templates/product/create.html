@@ -1,0 +1,13 @@
+<div>
+    <form action="{{ url_for('create_product') }}" method="POST" enctype="multipart/form-data">
+        <label for="product_img">Imagem: </label></br>
+        <input type="file" name="product_img" id="product_img" accept="image/*"></br>
+        <label for="product_name">Nome: </label></br>
+        <input type="text" name="product_name" id="product_name"></br>
+        <label for="product_price">Preço: </label></br>
+        <input type="text" name="product_price" id="product_price"></br>
+        <label for="product_desc">Descrição: </label></br>
+        <input type="text" name="product_desc" id="product_desc"></br>
+        <button>Registrar produto</button>
+    </form>
+</div>

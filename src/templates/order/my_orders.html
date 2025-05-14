@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Minhas Compras</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+<body>
+    {% include 'header/index.html' %}
+    
+    <div class="orders-container">
+        <h1>Minhas Compras</h1>
+        
+        {% if not orders %}
+        <p class="no-orders">Você ainda não fez nenhuma compra.</p>
+        {% else %}
+        <div class="orders-list">
+            {% for order in orders %}
+            <div class="order-card">
+                <div class="order-header">
+                    <span class="order-id">Pedido #{{ order.tracking_code }}</span>
+                    <span class="order-date">{{ order.order_date.strftime('%d/%m/%Y') }}</span>
+                </div>
+                
+                <div class="order-body">
+                    <div class="order-info">
+                        <p><strong>Total:</strong> R$ {{ "%.2f"|format(order.total_price) }}</p>
+                        <p><strong>Pagamento:</strong> 
+                            <span class="status-{{ order.payment_status }}">
+                                {{ order.payment_status|capitalize }}
+                            </span>
+                        </p>
+                        <p><strong>Envio:</strong> 
+                            <span class="status-{{ order.shipping_status }}">
+                                {{ order.shipping_status|capitalize }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

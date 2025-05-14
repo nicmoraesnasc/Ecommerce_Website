@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+    <title>Document</title>
+</head>
+<body>
+    <div class="card">
+        {% include 'header/index.html' %}
+        <img class="card-img-top" src="{{ url_for('static', filename='image/empty-image.jpg')}}" alt="Imagem de capa do card" style="width: 150px;">
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('add_to_cart', product_id=product_id) }}">
+                <label><h5 class="card-title">{{ product_name }}</h5></label>
+                <label><p class="card-price">{{ product_price }}</p></label>
+                <label><p class="card-text">{{ product_desc }}</p></label>
+                <label for="quantity">Quantidade:</label>
+                <input type="number" name="quantity" id="quantity" value="1" min="1" required>
+                <button type="submit" class="btn btn-primary">Adicionar ao carrinho</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

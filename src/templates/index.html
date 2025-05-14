@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+    <title>Home</title>
+</head>
+<body>
+    {% include 'header/index.html' %}
+    <p> {{ user_id }} </p>
+
+    {% if is_admin %}
+        {% include 'product/create.html' %}
+        <br><hr><br>
+    {% endif %}
+    
+    {% for product_id, product_name, product_desc, product_price, product_img in products %}
+        {% if is_admin %}
+            <a href="{{ url_for('update_product', id=product_id) }}">{{ product_name }}</a>
+            <br>
+        {% else %}
+            <a href="{{ url_for('select_product', id=product_id) }}">{{ product_name }}</a>
+        {% endif %}
+    {% endfor %}
+
+    
+</body>
+</html>
