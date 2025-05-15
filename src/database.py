@@ -92,7 +92,7 @@ class Database:
             shipping_city VARCHAR(255),
             shipping_state VARCHAR(255),
             payment_status ENUM('pendente', 'pago', 'erro', 'estornado') DEFAULT 'pago',
-            shipping_status ENUM('pendente', 'enviado') DEFAULT 'enviando',
+            shipping_status ENUM('pendente', 'enviado') DEFAULT 'enviado',
             FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE CASCADE
         );
     """)
@@ -270,7 +270,7 @@ class Database:
   def insert_order(self, tracking_code, user_id, order_date, total_price, 
                 confirmed_payment=1, shipped=0, completed=0, 
                 shipping_address=None, shipping_city=None, shipping_state=None, 
-                payment_status='pago', shipping_status='enviando'):
+                payment_status='pago', shipping_status='enviado'):
     try:
         valid_payment = ['pendente', 'pago', 'erro', 'estornado']
         valid_shipping = ['pendente', 'enviado']
