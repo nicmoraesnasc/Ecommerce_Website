@@ -61,7 +61,7 @@
 
 .header-div::before {
     content: "";
-    background: url('../images/adorn_saturn_logo.png') no-repeat;
+    background: url('../image/adorn_saturn_logo.png') no-repeat;
     background-size: contain;
     width: 120px;
     height: 40px;
