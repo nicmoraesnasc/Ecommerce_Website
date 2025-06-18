@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Editar {{ product_name }}</title>
+</head>
+<body>
+    {% include 'header/index.html' %}
+
+    <div class="container">
+        <h1>EDITAR PRODUTO</h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('update_product', id=product_id) }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="product_name">Nome:</label>
+                <input type="text" id="product_name" name="product_name" value="{{ product_name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="product_price">Preço:</label>
+                <input type="number" step="0.01" id="product_price" name="product_price" value="{{ product_price }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="product_desc">Descrição:</label>
+                <textarea id="product_desc" name="product_desc" required>{{ product_desc }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="product_img">Imagem:</label>
+                {% if product_img %}
+                    <img src="{{ url_for('static', filename='uploads/' + product_img) }}" alt="Imagem atual" class="current-image">
+                {% endif %}
+                <input type="file" id="product_img" name="product_img" accept="image/*">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Atualizar</button>
+            </div>
+        </form>
+
+        <form action="{{ url_for('delete_product', product_id=product_id) }}" method="POST" style="margin-top: 10px;">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este produto?')">
+                Excluir
+            </button>
+        </form>
+    </div>
+</body>
+</html>

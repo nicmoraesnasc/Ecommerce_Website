@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Compra Finalizada</title>
+</head>
+<body>
+    {% include 'header/index.html' %}
+    
+    <div class="checkout-success">
+        <h2>Compra Finalizada com Sucesso!</h2>
+        <div class="order-details">
+            <p>Seu código de rastreamento é: <strong>{{ tracking_code }}</strong></p>
+            <p>Você receberá um e-mail com os detalhes do envio.</p>
+            
+            <div class="shipping-info">
+                <h3>Endereço de Envio:</h3>
+                <p>{{ order.shipping_address }}</p>
+                <p>{{ order.shipping_city }} - {{ order.shipping_state }}</p>
+            </div>
+        </div>
+        <a href="{{ url_for('products') }}" class="btn-continue">Continuar comprando</a>
+    </div>
+</body>
+</html>

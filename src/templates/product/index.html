@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+    <title>Catálogo</title>
+</head>
+<body>
+    {% include 'header/index.html' %}
+    
+    {% if is_admin %}
+        <div class="admin-section">
+            <h1>REGISTRAR PRODUTOS</h1>
+            {% include 'product/create.html' %}
+        </div>
+        <hr>
+    {% endif %}
+
+    <h1>CATÁLOGO</h1>
+
+    <div class="product-list">
+        {% for product in products %}
+            <div class="product-card">
+                {% if product[4] %}
+                    <img src="{{ url_for('static', filename='uploads/' + product[4]) }}" 
+                         alt="{{ product[1] }}" 
+                         class="product-image">
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/no-image.jpg') }}" 
+                         alt="Sem imagem" 
+                         class="product-image">
+                {% endif %}
+                
+                {% if is_admin %}
+                    <a href="{{ url_for('update_product', id=product[0]) }}" class="product-name">{{ product[1] }}</a>
+                {% else %}
+                    <a href="{{ url_for('select_product', id=product[0]) }}" class="product-name">{{ product[1] }}</a>
+                {% endif %}
+                
+                <p class="product-desc">{{ product[2] }}</p>
+                <div class="product-price">R$ {{ "%.2f"|format(product[3]) }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

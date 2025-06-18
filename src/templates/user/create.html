@@ -1,0 +1,164 @@
+<body class="create-page"> 
+    <div class="register-container">
+        <form action="{{ url_for('create_user') }}" method="post" id="register-form" novalidate>
+            <div class="form-header">
+                <h1>Crie sua conta</h1>
+            </div>
+            
+            <div class="form-body">
+                <!-- Nome -->
+                <div class="form-group">
+                    <label for="name">Nome: *</label>
+                    <input type="text" name="name" id="name" required>
+                    <div class="error-message" id="name-error"></div>
+                </div>
+
+                <!-- Sobrenome -->
+                <div class="form-group">
+                    <label for="last_name">Sobrenome: *</label>
+                    <input type="text" name="last_name" id="last_name" required>
+                    <div class="error-message" id="last_name-error"></div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">E-mail: *</label>
+                    <input type="email" name="email" id="email" required>
+                    <div class="error-message" id="email-error"></div>
+                </div>
+
+                <!-- Telefone -->
+                <div class="form-group">
+                    <label for="phone">Telefone: *</label>
+                    <input type="text" name="phone" id="phone" required pattern="[0-9]{10,11}">
+                    <div class="error-message" id="phone-error"></div>
+                </div>
+
+                <!-- CEP -->
+                <div class="form-group">
+                    <label for="zip-code">CEP: *</label>
+                    <input type="text" name="zip-code" id="zip-code" required pattern="[0-9]{8}">
+                    <div class="error-message" id="zip-code-error"></div>
+                </div>
+
+                <!-- Estado -->
+                <div class="form-group">
+                    <label for="state">Estado: *</label>
+                    <select name="state" id="state" required>
+                        <option value="">Selecione...</option>
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                        <option value="DF">Distrito Federal</option>
+                    </select>
+                    <div class="error-message" id="state-error"></div>
+                </div>
+
+                <!-- Cidade -->
+                <div class="form-group">
+                    <label for="city">Cidade: *</label>
+                    <input type="text" name="city" id="city" required>
+                    <div class="error-message" id="city-error"></div>
+                </div>
+
+                <!-- Senha -->
+                <div class="form-group">
+                    <label for="password">Senha: *</label>
+                    <input type="password" name="password" id="password" required minlength="6">
+                    <div class="error-message" id="password-error"></div>
+                </div>
+
+                <!-- Confirmar Senha -->
+                <div class="form-group">
+                    <label for="password_c">Confirme sua senha: *</label>
+                    <input type="password" name="password_c" id="password_c" required>
+                    <div class="error-message" id="password_c-error"></div>
+                </div>
+
+                <div class="form-footer">
+                    <button type="submit">Registrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+    <script>
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            let valid = true;
+            
+            // Validação dos campos obrigatórios
+            const requiredFields = ['name', 'last_name', 'email', 'phone', 'zip-code', 'state', 'city', 'password', 'password_c'];
+            requiredFields.forEach(field => {
+                const element = document.getElementById(field);
+                const errorElement = document.getElementById(`${field}-error`);
+                
+                if (!element.value.trim()) {
+                    errorElement.textContent = 'Este campo é obrigatório';
+                    errorElement.style.display = 'block';
+                    valid = false;
+                } else {
+                    errorElement.style.display = 'none';
+                }
+            });
+            
+            // Validação de senha
+            const password = document.getElementById('password');
+            const passwordConfirm = document.getElementById('password_c');
+            const passwordError = document.getElementById('password_c-error');
+            
+            if (password.value !== passwordConfirm.value) {
+                passwordError.textContent = 'As senhas não coincidem';
+                passwordError.style.display = 'block';
+                valid = false;
+            } else {
+                passwordError.style.display = 'none';
+            }
+            
+            // Validação de email
+            const email = document.getElementById('email');
+            const emailError = document.getElementById('email-error');
+            if (email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                emailError.textContent = 'Por favor, insira um email válido';
+                emailError.style.display = 'block';
+                valid = false;
+            }
+            
+            if (!valid) {
+                e.preventDefault();
+            }
+        });
+
+        // Validação em tempo real
+        document.querySelectorAll('#register-form input, #register-form select').forEach(input => {
+            input.addEventListener('input', function() {
+                const errorElement = document.getElementById(`${this.id}-error`);
+                if (this.checkValidity()) {
+                    errorElement.style.display = 'none';
+                }
+            });
+        });
+    </script>

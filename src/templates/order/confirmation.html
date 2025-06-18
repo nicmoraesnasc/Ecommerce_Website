@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+    <title>Confirmação de Pedido</title>
+</head>
+<body>
+    {% include 'header/index.html' %}
+    
+    <div class="confirmation-container">
+        <h2>Compra Finalizada com Sucesso!</h2>
+        <p>Seu código de rastreamento é: <strong>{{ tracking_code }}</strong></p>
+        <p>Você receberá um e-mail com os detalhes do seu pedido.</p>
+        <a href="{{ url_for('products') }}" class="btn-continue">Voltar às Compras</a>
+    </div>
+</body>
+</html>

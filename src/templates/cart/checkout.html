@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra - SeuSite</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+<body>
+    {% include 'header/index.html' %}
+    
+    <div class="checkout-container">
+        <h1 class="checkout-title">Finalizar Compra</h1>
+        
+        <form method="POST" action="{{ url_for('process_payment') }}" class="checkout-form">
+            <section class="address-section">
+                <h2>Endereço de Entrega</h2>
+                
+                <div class="new-address-fields">
+                    <div class="form-group">
+                        <label for="new_address">Endereço Completo</label>
+                        <input type="text" id="new_address" name="new_address" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="new_city">Cidade</label>
+                            <input type="text" id="new_city" name="new_city" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="new_state">Estado</label>
+                            <select id="new_state" name="new_state" required>
+                                <option value="">Selecione</option>
+                                <option value="AC">Acre</option>
+                                <option value="AL">Alagoas</option>
+                                <option value="AP">Amapá</option>
+                                <option value="AM">Amazonas</option>
+                                <option value="BA">Bahia</option>
+                                <option value="CE">Ceará</option>
+                                <option value="ES">Espírito Santo</option>
+                                <option value="GO">Goiás</option>
+                                <option value="MA">Maranhão</option>
+                                <option value="MT">Mato Grosso</option>
+                                <option value="MS">Mato Grosso do Sul</option>
+                                <option value="MG">Minas Gerais</option>
+                                <option value="PA">Pará</option>
+                                <option value="PB">Paraíba</option>
+                                <option value="PR">Paraná</option>
+                                <option value="PE">Pernambuco</option>
+                                <option value="PI">Piauí</option>
+                                <option value="RJ">Rio de Janeiro</option>
+                                <option value="RN">Rio Grande do Norte</option>
+                                <option value="RS">Rio Grande do Sul</option>
+                                <option value="RO">Rondônia</option>
+                                <option value="RR">Roraima</option>
+                                <option value="SC">Santa Catarina</option>
+                                <option value="SP">São Paulo</option>
+                                <option value="SE">Sergipe</option>
+                                <option value="TO">Tocantins</option>
+                                <option value="DF">Distrito Federal</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="new_zipcode">CEP</label>
+                        <input type="text" id="new_zipcode" name="new_zipcode" required>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="payment-section">
+                <h2>Método de pagamento</h2>
+                
+                <div class="payment-methods">
+                    <div class="payment-method">
+                        <input type="radio" id="credit_card" name="payment_method" value="credit_card" checked class="payment-radio">
+                        <label for="credit_card">Cartão de Crédito</label>
+                        
+                        <div class="payment-details">
+                            <div class="form-group">
+                                <label for="card_number">Número do Cartão</label>
+                                <input type="text" id="card_number" name="card_number" placeholder="0000 0000 0000 0000">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="card_name">Nome no Cartão</label>
+                                <input type="text" id="card_name" name="card_name">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="card_expiry">Validade (MM/AA)</label>
+                                    <input type="text" id="card_expiry" name="card_expiry" placeholder="MM/AA">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="card_cvv">CVV</label>
+                                    <input type="text" id="card_cvv" name="card_cvv" placeholder="000">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-method">
+                        <input type="radio" id="pix" name="payment_method" value="pix" class="payment-radio">
+                        <label for="pix">PIX</label>
+                    </div>
+                    
+                    <div class="payment-method">
+                        <input type="radio" id="boleto" name="payment_method" value="boleto" class="payment-radio">
+                        <label for="boleto">Boleto Bancário</label>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="order-summary">
+                <h2>Resumo do Pedido</h2>
+                
+                <div class="order-items">
+                    {% for item in cart_items %}
+                    <div class="order-item">
+                        <span class="product-name">{{ item.product_name }} ({{ item.quantity }}x)</span>
+                        <span class="product-price">R$ {{ "%.2f"|format(item.price * item.quantity) }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="order-total">
+                    <span>Total:</span>
+                    <span>R$ {{ "%.2f"|format(total_price) }}</span>
+                </div>
+                
+                <button type="submit" class="submit-button">Confirmar Pagamento</button>
+            </section>
+        </form>
+    </div>
+
+    <script>
+        document.querySelector('.address-toggle').addEventListener('change', function() {
+            const newAddressFields = document.querySelector('.new-address-fields');
+            newAddressFields.style.display = this.checked ? 'none' : 'block';
+            
+            document.querySelectorAll('.new-address-fields [required]').forEach(field => {
+                field.disabled = this.checked;
+            });
+        });
+        
+        document.querySelectorAll('.payment-radio').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.payment-details').forEach(details => {
+                    details.style.display = 'none';
+                });
+                
+                if(this.checked && this.id === 'credit_card') {
+                    this.closest('.payment-method').querySelector('.payment-details').style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+    "host" : "localhost",
+    "port" : 8000,
+    "debug"  : false,
+    "db_name" : "mydatabase2",
+    "db_password": "root",
+    "db_user": "root"
+}
